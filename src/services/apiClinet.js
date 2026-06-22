@@ -1,12 +1,12 @@
+import axios from "axios";
+export const BASE_URL = "https://dummyjson.com";
 
-export const BASE_URL = "https://dummyjson.com"
+export const apiClient = axios.create({
+  baseURL: BASE_URL,
+  headers: { 
+     "Content-Type": "application/json",
+   }
+})
 
 
-
-export const fetchPosts = async () => {
-  const res = await fetch(`${BASE_URL}/posts`);
-  const data = await res.json();
-  return data
-};
-
-
+// Axios thực chất là một function được bọc wrapped function sẽ có các method như get, post, put, delete, patch, head, options, request để thực hiện các request HTTP.

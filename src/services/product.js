@@ -1,13 +1,30 @@
 import { BASE_URL } from "./apiClinet";
+import { apiClient } from "./apiClinet";
+
 
 export const fetchProduct = async () => {
-  const res = await fetch(`${BASE_URL}/products`);
-  const data = await res.json();
-  return data;
+  const res = await apiClient.get(`${BASE_URL}/products`);
+  return res.data;
 };
 
+export const createProduct = async (productData) => {
+  const res = await apiClient.post(`${BASE_URL}/products/add`, productData);
+  console.log("createProduct", res.data);
+  return res.data;
+}
+
+export const updateProduct = async (id, productData) => {
+  const res = await apiClient.put(`${BASE_URL}/products/${id}`, productData);
+  return res.data;
+};
+
+export const deleteProduct = async (id) => {
+  const res = await apiClient.delete(`${BASE_URL}/products/${id}`);
+  return res.data;
+}
+
 export const fetchProductById = async (id) => {
-  const res = await fetch(`${BASE_URL}/products/${id}`);
-  const data = await res.json();
+  const res = await apiClient.get(`${BASE_URL}/products/${id}`);
+  return res.data;
   return data;
 };

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Feature from "../../components/feature";
 import Herosection1 from "../../components/herosection1";
-import { fetchPosts } from "@/services/apiClinet";
 import Blog from "@/components/blog-components";
 import Features from "@/components/feature-component";
 import FAQ from "@/components/faq-component";
-import { fetchProduct } from "@/services/product";
+
 
 
 

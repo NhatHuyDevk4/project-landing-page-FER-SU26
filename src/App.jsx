@@ -8,8 +8,14 @@ import { LoginPage } from "./views/login";
 import NotFoundPage from "./views/notFound";
 import ProductsPage from "./views/products";
 import ProductDetail from "./views/products/page/detail";
-
+import {apiClient} from "./services/apiClinet";
+import ManagerPage from "./views/products/page/manager";
+import CreateProductPage from "./views/products/page/create";
 function App() {
+
+  const apiClientInstance = apiClient; // Sử dụng apiClientInstance từ apiClinet.js
+  console.log( typeof apiClientInstance)
+  console.dir(apiClientInstance)
   return (
     <>
       {/* HEADER  */}
@@ -29,6 +35,8 @@ function App() {
            <Route  path="/products" >
             <Route index element={<ProductsPage />} />
             <Route path=":id" element={<ProductDetail />} />
+            <Route path="manager" element={<ManagerPage />}  />
+            <Route path="create" element={<CreateProductPage />}  />
            </Route>
 
           {/* END BODY */}

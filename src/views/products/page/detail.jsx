@@ -7,12 +7,10 @@ import { fetchProductById } from "@/services/product";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ProductDetail = () => {
-  const [product, setProduct] = useState({});
-    const navigate = useNavigate();
-
-
-
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [product, setProduct] = useState({});
 
   const fetchDataProductDetail = async () => {
     const data = await fetchProductById(id);
@@ -23,8 +21,6 @@ const ProductDetail = () => {
   useEffect(() => {
     fetchDataProductDetail();
   }, []);
-
-  console.log(product);
 
   return (
     <div className="container mx-auto py-10">
