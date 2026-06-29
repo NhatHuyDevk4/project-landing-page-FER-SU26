@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { createProduct } from "@/services/product";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProductById, updateProduct } from "@/services/product";
 
 const initialForm = {
   title: "",
@@ -17,9 +17,10 @@ const initialForm = {
   thumbnail: "",
 };
 
-const CreateProductPage = () => {
+const EditProductPage = () => {
   const navigate = useNavigate();
-
+  const {id} = useParams();
+  console.log("EditProductPage id:", id);
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -30,8 +31,6 @@ const CreateProductPage = () => {
     const name = e.target.name;
     const value = e.target.value;
     console.log("handleChange", name, value);
-    // Đây là cách cập nhập state của một object trong React mà vẫn giữ nguyên cac key khác, chỉ thay đổi key được chọn
-    // ...prev là spread operator, nó sẽ copy tất cả các key-value của object prev vào object mới, sau đó key được chọn sẽ được cập nhật với value mới
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -52,17 +51,40 @@ const CreateProductPage = () => {
         stock: form.stock ? Number(form.stock) : undefined,
       };
 
-      const data = await createProduct(payload);
-      console.log("Created product:", data);
+      const data = await updateProduct(id, payload);
+      console.log("Updated product:", data);
       setResult(data);
-      setForm(initialForm);
     } catch (err) {
       console.error(err);
-      setError("Tạo sản phẩm thất bại. Vui lòng thử lại.");
+      setError("Cập nhật sản phẩm thất bại. Vui lòng thử lại.");
     } finally {
       setLoading(false);
     }
   };
+
+  // transaction đồng bộ dữ liệu
+  const fetchProductById = async (id) => {
+    try {
+        const res = await getProductById(id);
+        console.log("Fetched product by ID:", res);
+        setForm({
+            title: res.title || "",
+            description: res.description || "",
+            price: res.price || "",
+            discountPercentage: res.discountPercentage || "",
+            stock: res.stock || "",
+            brand: res.brand || "",
+            category: res.category || "",
+            thumbnail: res.thumbnail || "",
+        })
+    } catch (error) {
+      console.error("Error fetching product by ID:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchProductById(id);
+  }, [id])
 
   return (
     <div className="container mx-auto max-w-2xl py-10">
@@ -72,9 +94,9 @@ const CreateProductPage = () => {
 
       <Card>
         <CardHeader>
-          <h1 className="text-2xl font-semibold">Tạo sản phẩm mới</h1>
+          <h1 className="text-2xl font-semibold">Chỉnh sửa sản phẩm</h1>
           <p className="text-muted-foreground text-sm">
-            Thêm sản phẩm qua API dummyjson (POST /products/add)
+            Cập nhật thông tin sản phẩm qua API dummyjson (PUT /products/:id)
           </p>
         </CardHeader>
 
@@ -178,7 +200,7 @@ const CreateProductPage = () => {
 
             <div className="flex items-center gap-3 pt-2">
               <Button type="submit" disabled={loading}>
-                {loading ? "Đang tạo..." : "Tạo sản phẩm"}
+                {loading ? "Đang cập nhật..." : "Cập nhật sản phẩm"}
               </Button>
               <Button
                 type="button"
@@ -195,7 +217,7 @@ const CreateProductPage = () => {
             {result && (
               <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-sm">
                 <p className="font-medium text-green-700">
-                  Tạo thành công! ID mới: {result.id}
+                  Cập nhật thành công! ID: {result.id}
                 </p>
                 <pre className="mt-2 overflow-auto text-xs text-muted-foreground">
                   {JSON.stringify(result, null, 2)}
@@ -209,4 +231,4 @@ const CreateProductPage = () => {
   );
 };
 
-export default CreateProductPage;
+export default EditProductPage;

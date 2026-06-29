@@ -25,5 +25,4 @@ export const deleteTodos = async (id) => {
 export const fetchTodosById = async (id) => {
   const res = await apiClient.get(`${BASE_URL}/todos/${id}`);
   return res.data;
-  return data;
 };

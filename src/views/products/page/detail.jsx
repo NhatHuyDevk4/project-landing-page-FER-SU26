@@ -3,8 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { CalendarDaysIcon, ArrowRightIcon } from "lucide-react";
-import { fetchProductById } from "@/services/product";
+
 import { useNavigate, useParams } from "react-router-dom";
+import { getProductById } from "@/services/product";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({});
 
   const fetchDataProductDetail = async () => {
-    const data = await fetchProductById(id);
+    const data = await getProductById(id);
     console.log(data);
     setProduct(data);
   };

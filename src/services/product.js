@@ -23,8 +23,7 @@ export const deleteProduct = async (id) => {
   return res.data;
 }
 
-export const fetchProductById = async (id) => {
+export const getProductById = async (id) => {
   const res = await apiClient.get(`${BASE_URL}/products/${id}`);
   return res.data;
-  return data;
 };

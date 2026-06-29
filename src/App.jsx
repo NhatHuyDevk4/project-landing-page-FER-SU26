@@ -3,7 +3,7 @@ import HeaderLayout from "./layouts/headerLayout";
 import HomePage from "./views/home";
 import AboutPage from "./views/about";
 import ProfilePage from "./views/profile";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "./views/login";
 import NotFoundPage from "./views/notFound";
 import ProductsPage from "./views/products";
@@ -11,6 +11,7 @@ import ProductDetail from "./views/products/page/detail";
 import {apiClient} from "./services/apiClinet";
 import ManagerPage from "./views/products/page/manager";
 import CreateProductPage from "./views/products/page/create";
+import EditProductPage from "./views/products/page/edit";
 function App() {
 
   const apiClientInstance = apiClient; // Sử dụng apiClientInstance từ apiClinet.js
@@ -24,7 +25,12 @@ function App() {
         <Routes>
           {/* BODY  */}
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<HomePage />} />
+
+
+          {/* IMPORTANT: VÌ ko trỏ đúng sẽ bị 0đ  */}
+          <Route path="/" element={<Navigate to="/products" replace />} />
+
+
           <Route path="/about" element={<AboutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
 
@@ -37,6 +43,7 @@ function App() {
             <Route path=":id" element={<ProductDetail />} />
             <Route path="manager" element={<ManagerPage />}  />
             <Route path="create" element={<CreateProductPage />}  />
+            <Route path="edit/:id" element={<EditProductPage />}  />
            </Route>
 
           {/* END BODY */}
